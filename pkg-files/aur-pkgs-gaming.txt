@@ -1,0 +1,4 @@
+mangohud
+mangohud-common
+protontricks
+dxvk-bin

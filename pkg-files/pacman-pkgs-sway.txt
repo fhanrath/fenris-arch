@@ -1,0 +1,16 @@
+sway
+xdg-desktop-portal-wlr
+python-i3ipc
+waybar
+wdisplays
+pamixer
+pavucontrol
+grim
+wf-recorder
+slurp
+ranger
+swaylock
+swayidle
+nm-connction-editor
+qt5ct
+wl-clipboard
