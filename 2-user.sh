@@ -74,7 +74,7 @@ esac
 
 touch "~/.cache/zshhistory"
 cd ~
-git clone "https://github.com/fhanrath/dotfiles"
+git clone "https://git.sr.ht/~fenris/dotfiles"
 cd dotfiles
 ./copy_dotfiles.sh
 sudo ./copy_root_dotfiles.sh
