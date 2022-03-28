@@ -2,7 +2,6 @@ sway
 xdg-desktop-portal-wlr
 python-i3ipc
 waybar
-wdisplays
 pamixer
 pavucontrol
 grim
