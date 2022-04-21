@@ -19,6 +19,9 @@ pipewire-v4l2
 wireplumber
 helvum
 mpv
+libimobiledevice
+ifuse
+perl-image-exiftool
 autoconf
 automake
 base
