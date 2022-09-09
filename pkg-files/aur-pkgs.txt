@@ -13,3 +13,4 @@ spotify-tui
 ttf-material-design-icons
 cbonsai
 catsay
+bluetooth-autoconnect
