@@ -127,3 +127,4 @@ ungoogled-chromium
 veracrypt
 freerdp
 blender
+swig
