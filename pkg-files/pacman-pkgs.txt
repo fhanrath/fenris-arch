@@ -126,3 +126,4 @@ qt6-wayland
 ungoogled-chromium
 veracrypt
 freerdp
+blender

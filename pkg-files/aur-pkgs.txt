@@ -14,3 +14,4 @@ ttf-material-design-icons
 cbonsai
 catsay
 bluetooth-autoconnect
+blender-plugin-cad-sketcher-git
