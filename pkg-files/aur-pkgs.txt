@@ -1,7 +1,7 @@
 vscodium-bin
 librewolf-bin
 autojump
-otf-nerd-fonts-fira-code
+nerd-fonts-fira-code
 snapper-gui-git
 snap-pac
 nordic-darker-standard-buttons-theme
