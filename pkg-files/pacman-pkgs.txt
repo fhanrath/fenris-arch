@@ -128,3 +128,9 @@ veracrypt
 freerdp
 blender
 swig
+helix
+gopls
+rust-analyzer
+typescript-language-server
+bash-language-server
+yaml-language-server

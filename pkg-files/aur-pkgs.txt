@@ -15,3 +15,5 @@ cbonsai
 catsay
 bluetooth-autoconnect
 blender-plugin-cad-sketcher-git
+dockerfile-language-server-bin
+vscode-langservers-extracted
