@@ -50,7 +50,9 @@ echo -ne "
                     Formating Disk
 -------------------------------------------------------------------------
 "
-# disk prep
+
+umount -A --recursive /mnt # make sure everything is unmounted before we start# disk prep
+
 sgdisk -Z ${DISK} # zap all on disk
 sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
 
@@ -81,10 +83,10 @@ createsubvolumes () {
 }
 
 mountallsubvol () {
-    mount -o ${mountoptions},subvol=@home /dev/mapper/ROOT /mnt/home
-    mount -o ${mountoptions},subvol=@tmp /dev/mapper/ROOT /mnt/tmp
-    mount -o ${mountoptions},subvol=@.snapshots /dev/mapper/ROOT /mnt/.snapshots
-    mount -o ${mountoptions},subvol=@var /dev/mapper/ROOT /mnt/var
+    mount -o ${mountoptions},subvol=@home ${partition3} /mnt/home
+    mount -o ${mountoptions},subvol=@tmp ${partition3} /mnt/tmp
+    mount -o ${mountoptions},subvol=@.snapshots ${partition3} /mnt/.snapshots
+    mount -o ${mountoptions},subvol=@var ${partition3} /mnt/var
 }
 
 subvolumesetup () {
@@ -115,9 +117,9 @@ elif [[ "${FS}" == "luks" ]]; then
 # open luks container and ROOT will be place holder 
     echo -n "${luks_password}" | cryptsetup open ${partition3} ROOT -
 # now format that container
-    mkfs.btrfs -L ROOT /dev/mapper/ROOT
+    mkfs.btrfs -L ROOT ${partition3}
 # create subvolumes for btrfs
-    mount -t btrfs /dev/mapper/ROOT /mnt
+    mount -t btrfs ${partition3} /mnt
     subvolumesetup
 # store uuid of encrypted partition for grub
     echo encryped_partition_uuid=$(blkid -s UUID -o value ${partition3}) >> setup.conf
