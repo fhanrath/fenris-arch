@@ -26,6 +26,7 @@ Setting up mirrors for optimal download
 source setup.conf
 iso=$(curl -4 ifconfig.co/country-iso)
 timedatectl set-ntp true
+pacman -S --noconfirm archlinux-keyring
 pacman -S --noconfirm pacman-contrib terminus-font
 setfont ter-v22b
 sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
@@ -86,6 +87,14 @@ mountallsubvol () {
     mount -o ${mountoptions},subvol=@var /dev/mapper/ROOT /mnt/var
 }
 
+subvolumesetup () {
+    createsubvolumes
+    umount /mnt
+    mount -o ${mountoptions},subvol=@ ${partition3} /mnt
+    mkdir -p /mnt/{home,var,tmp,.snapshots}
+    mountallsubvol
+}
+
 if [[ "${DISK}" =~ "nvme" ]]; then
     partition2=${DISK}p2
     partition3=${DISK}p3
@@ -98,10 +107,7 @@ if [[ "${FS}" == "btrfs" ]]; then
     mkfs.vfat -F32 -n "EFIBOOT" ${partition2}
     mkfs.btrfs -L ROOT ${partition3} -f
     mount -t btrfs ${partition3} /mnt
-elif [[ "${FS}" == "ext4" ]]; then
-    mkfs.vfat -F32 -n "EFIBOOT" ${partition2}
-    mkfs.ext4 -L ROOT ${partition3}
-    mount -t ext4 ${partition3} /mnt
+    subvolumesetup
 elif [[ "${FS}" == "luks" ]]; then
     mkfs.vfat -F32 -n "EFIBOOT" ${partition2}
 # enter luks password to cryptsetup and format root partition
@@ -112,29 +118,13 @@ elif [[ "${FS}" == "luks" ]]; then
     mkfs.btrfs -L ROOT /dev/mapper/ROOT
 # create subvolumes for btrfs
     mount -t btrfs /dev/mapper/ROOT /mnt
-    createsubvolumes       
-    umount /mnt
-# mount @ subvolume
-    mount -o ${mountoptions},subvol=@ /dev/mapper/ROOT /mnt
-# make directories home, .snapshots, var, tmp
-    mkdir -p /mnt/{home,var,tmp,.snapshots}
-# mount subvolumes
-    mountallsubvol
+    subvolumesetup
 # store uuid of encrypted partition for grub
     echo encryped_partition_uuid=$(blkid -s UUID -o value ${partition3}) >> setup.conf
 fi
 
-# checking if user selected btrfs
-if [[ ${FS} =~ "btrfs" ]]; then
-ls /mnt | xargs btrfs subvolume delete
-btrfs subvolume create /mnt/@
-umount /mnt
-mount -t btrfs -o subvol=@ -L ROOT /mnt
-fi
-
 # mount target
-mkdir /mnt/boot
-mkdir /mnt/boot/efi
+mkdir -p /mnt/boot/efi
 mount -t vfat -L EFIBOOT /mnt/boot/
 
 if ! grep -qs '/mnt' /proc/mounts; then
@@ -152,16 +142,13 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 if [[ $swapmb -gt 0 ]]; then
-    # Put swapfile into separate subvolume or else you wouldn't be able to make snapshots of root
-    btrfs subvolume create /mnt/swap
-    truncate -s 0 /mnt/swap/swapfile
-    chattr +C /mnt/swap/swapfile #apply NOCOW, btrfs needs that.
-    btrfs property set /mnt/swap/swapfile compression none
-    dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=$swapmb status=progress
-    chmod 600 /mnt/swap/swapfile #set permissions.
-    chown root /mnt/swap/swapfile
-    mkswap /mnt/swap/swapfile
-    swapon /mnt/swap/swapfile
+    mkdir -p /mnt/opt/swap
+    chattr +C /mnt/opt/swap/swapfile #apply NOCOW, btrfs needs that.
+    dd if=/dev/zero of=/mnt/opt/swap/swapfile bs=1M count=$swapmb status=progress
+    chmod 600 /mnt/opt/swap/swapfile #set permissions.
+    chown root /mnt/opt/swap/swapfile
+    mkswap /mnt/opt/swap/swapfile
+    swapon /mnt/opt/swap/swapfile
     echo "vm.swappiness=10" >> /mnt/etc/sysctl.conf # Lower swappiness
 fi
 
@@ -175,7 +162,7 @@ echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
 cp -R ${SCRIPT_DIR} /mnt/root/${SCRIPTHOME}
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
-genfstab -U /mnt >> /mnt/etc/fstab
+genfstab -L /mnt >> /mnt/etc/fstab
 echo -ne "
 -------------------------------------------------------------------------
                     GRUB BIOS Bootloader Install & Check
@@ -183,6 +170,8 @@ echo -ne "
 "
 if [[ ! -d "/sys/firmware/efi" ]]; then
     grub-install --boot-directory=/mnt/boot ${DISK}
+else
+    pacstrab /mnt efibootmgr --noconfirm --needed
 fi
 echo -ne "
 -------------------------------------------------------------------------

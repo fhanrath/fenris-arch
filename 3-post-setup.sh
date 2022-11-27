@@ -65,16 +65,11 @@ echo -ne "
                     Enabling Essential Services
 -------------------------------------------------------------------------
 "
-systemctl enable cups.service
 ntpd -qg
 systemctl enable ntpd.service
 systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
-systemctl enable bluetooth
-systemctl enable portmaster
-systemctl enable syncthing@$USERNAME.service
-systemctl enable bluetooth-autoconnect
 su $USERNAME -c "systemctl enable pipewire --user"
 su $USERNAME -c "systemctl enable pipewire-pulse --user"
 su $USERNAME -c "systemctl enable pipewire_sink --user"

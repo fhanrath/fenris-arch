@@ -38,15 +38,13 @@ filesystem () {
 echo -ne "
     Please Select your file system for both boot and root
     1)      btrfs
-    2)      ext4
-    3)      luks with btrfs
+    2)      luks with btrfs
     0)      exit
 "
 read FS
 case $FS in
 1) set_option FS btrfs;;
-2) set_option FS ext4;;
-3) 
+2) 
 echo -ne "Please enter your luks password: "
 read -s luks_password # read password without echo
 set_option luks_password $luks_password
@@ -150,20 +148,6 @@ set_option PASSWORD $password
 read -rep "Please enter your hostname: " nameofmachine
 set_option nameofmachine $nameofmachine
 }
-games () {
-echo -ne "
-Do you want to play games? yes/no:
-"
-read games
-
-case $games in
-    y|Y|yes|Yes|YES)
-    echo "games=yes" >> setup.conf;;
-    n|N|no|NO|No)
-    echo "games=no" >> setup.conf;;
-    *) echo "Wrong option. Try again";games;;
-esac
-}
 laptop () {
 echo -ne "
 Do you install on a laptop or otherwise mobile device? yes/no:
@@ -212,6 +196,5 @@ timezone
 clear
 logo
 keymap
-games
 laptop
 swapfile

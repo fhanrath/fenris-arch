@@ -26,7 +26,7 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 pacman -S --noconfirm pacman-contrib curl
-pacman -S --noconfirm reflector rsync
+pacman -S --noconfirm reflector rsync grub git rustup zsh
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 
 nc=$(grep -c ^processor /proc/cpuinfo)
@@ -81,32 +81,6 @@ Server = https://download.opensuse.org/repositories/home:/ungoogled_chromium/Arc
 
 pacman -Sy --noconfirm
 
-echo -ne "
--------------------------------------------------------------------------
-                    Installing Base System  
--------------------------------------------------------------------------
-"
-cat /root/$SCRIPTHOME/pkg-files/pacman-pkgs.txt | while read line 
-do
-    echo "INSTALLING: ${line}"
-   sudo pacman -S --noconfirm --needed ${line}
-done
-
-cat /root/$SCRIPTHOME/pkg-files/pacman-pkgs-sway.txt | while read line 
-do
-echo "INSTALLING: ${line}"
-sudo pacman -S --noconfirm --needed ${line}
-done
-
-case $games in
-    y|Y|yes|Yes|YES)
-    cat /root/$SCRIPTHOME/pkg-files/pacman-pkgs-gaming.txt | while read line 
-    do
-    echo "INSTALLING: ${line}"
-    sudo pacman -S --noconfirm --needed ${line}
-    done;;
-    *) echo "not installing gaming packages";;
-esac
 echo -ne "
 -------------------------------------------------------------------------
                     Installing Microcode

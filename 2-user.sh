@@ -30,67 +30,7 @@ rustup toolchain install stable
 makepkg -si --noconfirm
 
 cd ~/build
-git clone https://github.com/fhanrath/sway-save-outputs
-cd ~/build/sway-save-outputs
-sudo ./install.sh
-cd ~/build
-
-echo -ne "
--------------------------------------------------------------------------
-                    Install Portmaster
--------------------------------------------------------------------------
-"
-# Clone the repository
-git clone https://github.com/safing/portmaster-packaging
-
-# Enter the repo and build/install the package (it's under linux/)
-cd portmaster-packaging/linux
-makepkg -si --noconfirm
-
-cd ~
-
-
-echo -ne "
--------------------------------------------------------------------------
-                    Install AUR Packages
--------------------------------------------------------------------------
-"
-
-paru -S --noconfirm --needed - < ~/$SCRIPTHOME/pkg-files/aur-pkgs.txt
-
-paru -S --noconfirm --needed - < ~/$SCRIPTHOME/pkg-files/aur-pkgs-sway.txt
-
-case $games in
-    y|Y|yes|Yes|YES)
-    paru -S --noconfirm --needed - < ~/$SCRIPTHOME/pkg-files/aur-pkgs-gaming.txt;;
-    *) echo "not installing gaming packages";;
-esac
-
-case $laptop in
-    y|Y|yes|Yes|YES)
-    paru -S --noconfirm --needed - < ~/$SCRIPTHOME/pkg-files/aur-pkgs-laptop.txt;;
-    *) echo "not installing laptop packages";;
-esac
-
-touch "~/.cache/zshhistory"
-cd ~
-git clone "https://git.sr.ht/~fenris/dotfiles"
-cd dotfiles
-./copy_dotfiles.sh
-sudo ./copy_root_dotfiles.sh
-cd ~
-
 export PATH=$PATH:~/.local/bin
-
-echo -ne "
--------------------------------------------------------------------------
-                    Install zsh Plugins
--------------------------------------------------------------------------
-"
-
-mkdir -p ~/.oh-my-zsh/custom/plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 echo -ne "
 -------------------------------------------------------------------------
