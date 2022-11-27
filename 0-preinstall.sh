@@ -143,8 +143,8 @@ echo -ne "
 "
 if [[ $swapmb -gt 0 ]]; then
     mkdir -p /mnt/opt/swap
-    chattr +C /mnt/opt/swap/swapfile #apply NOCOW, btrfs needs that.
     dd if=/dev/zero of=/mnt/opt/swap/swapfile bs=1M count=$swapmb status=progress
+    chattr +C /mnt/opt/swap/swapfile #apply NOCOW, btrfs needs that.
     chmod 600 /mnt/opt/swap/swapfile #set permissions.
     chown root /mnt/opt/swap/swapfile
     mkswap /mnt/opt/swap/swapfile
