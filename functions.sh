@@ -92,13 +92,11 @@ createsubvolumes () {
     btrfs subvolume create /mnt/@
     btrfs subvolume create /mnt/@home
     btrfs subvolume create /mnt/@var
-    btrfs subvolume create /mnt/@tmp
     btrfs subvolume create /mnt/@.snapshots
 }
 
 mountallsubvol () {
     mount -o ${mountoptions},subvol=@home ${partition3} /mnt/home
-    mount -o ${mountoptions},subvol=@tmp ${partition3} /mnt/tmp
     mount -o ${mountoptions},subvol=@.snapshots ${partition3} /mnt/.snapshots
     mount -o ${mountoptions},subvol=@var ${partition3} /mnt/var
 }
@@ -107,7 +105,7 @@ subvolumesetup () {
     createsubvolumes
     umount /mnt
     mount -o ${mountoptions},subvol=@ ${partition3} /mnt
-    mkdir -p /mnt/{home,var,tmp,.snapshots}
+    mkdir -p /mnt/{home,var,.snapshots}
     mountallsubvol
 }
 
