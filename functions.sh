@@ -155,7 +155,7 @@ setSwap () {
 # System
 
 installArch () {
-	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa libpipewire02 gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 --noconfirm --needed
+	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 --noconfirm --needed
 }
 
 addUbuntuKeyserver () {
