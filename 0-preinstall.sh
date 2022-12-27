@@ -86,14 +86,6 @@ fi
 
 echo -ne "
 -------------------------------------------------------------------------
-                    Checking for low memory systems <24G
-                    DISABLED
--------------------------------------------------------------------------
-"
-setSwap || errorAndExit "setting Swap"
-
-echo -ne "
--------------------------------------------------------------------------
                     Arch Install on Main Drive
 -------------------------------------------------------------------------
 "
@@ -101,6 +93,15 @@ installArch || errorAndExit "installing base system"
 addUbuntuKeyserver || errorAndExit "adding Ubuntu Keyserver"
 copyMirrorlist || errorAndExit "copying mirrorlist"
 copyScript || errorAndExit "copying script"
+
+echo -ne "
+-------------------------------------------------------------------------
+                    Checking for low memory systems <24G
+                    DISABLED
+-------------------------------------------------------------------------
+"
+setSwap || errorAndExit "setting Swap"
+
 genFstab || errorAndExit "generating fstab"
 
 echo -ne "
