@@ -54,6 +54,11 @@ pacmanEnableMultilib || errorAndExit "Enabling Multilib"
 
 installOpenBuildSystem || errorAndExit "Enabling Open build systems"
 
+
+if [[ -d "/sys/firmware/efi" ]]; then
+    pacmanInstall efibootmgr
+fi
+
 echo -ne "
 -------------------------------------------------------------------------
                     Installing Microcode

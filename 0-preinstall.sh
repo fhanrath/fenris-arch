@@ -109,7 +109,9 @@ echo -ne "
                     GRUB BIOS Bootloader Install & Check
 -------------------------------------------------------------------------
 "
-initBootloader || errorAndExit "initializing bootloader"
+if [[ ! -d "/sys/firmware/efi" ]]; then
+    initBiosGrub || errorAndExit "init Bios Grub"
+fi
 
 echo -ne "
 -------------------------------------------------------------------------

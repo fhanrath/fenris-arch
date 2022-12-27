@@ -153,7 +153,7 @@ setSwap () {
 # System
 
 installArch () {
-	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 --noconfirm --needed
+	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 rustup --noconfirm --needed
 }
 
 addUbuntuKeyserver () {
@@ -172,12 +172,8 @@ genFstab () {
 	genfstab -L /mnt >> /mnt/etc/fstab
 }
 
-initBootloader () {
-	if [[ ! -d "/sys/firmware/efi" ]]; then
-    grub-install --boot-directory=/mnt/boot ${DISK}
-	else
-    pacstrab /mnt efibootmgr --noconfirm --needed
-	fi
+initBiosGrub () {
+  grub-install --boot-directory=/mnt/boot ${DISK}
 }
 
 installEfiGrub () {
@@ -263,7 +259,6 @@ setMakeAndCompress () {
 # Packages
 
 installRust () {
-	pacmanInstall rustup
 	rustup toolchain install stable
 }
 
