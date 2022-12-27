@@ -31,7 +31,7 @@ testIso
 timedatectl set-ntp true
 pacmanInstall archlinux-keyring
 pacmanInstall pacman-contrib terminus-font
-setTermiusFont
+setTerminusFont
 pacmanActivateParallelDl || errorAndExit "activating parallel downloads"
 pacmanInstall reflector rsync grub
 echo -ne "

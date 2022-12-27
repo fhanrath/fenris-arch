@@ -65,8 +65,8 @@ setupPacmanMirrors () {
 	reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 }
 
-setTermiusFont () {
-	pacmanInstall termius-font
+setTerminusFont () {
+	pacmanInstall terminus-font
 	setfont ter-v22b
 }
 
