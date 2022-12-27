@@ -16,21 +16,24 @@ Installing AUR Softwares
 "
 # You can solve users running this script as root with this and then doing the same for the next for statement. However I will leave this up to you.
 source ~/$SCRIPTHOME/setup.conf
+source ~/$SCRIPTHOME/functions.sh
 
 echo -ne "
 -------------------------------------------------------------------------
                     Manual Installs
 -------------------------------------------------------------------------
 "
-mkdir ~/build
-cd ~/build
-git clone "https://aur.archlinux.org/paru.git"
-cd ~/build/paru
-rustup toolchain install stable
-makepkg -si --noconfirm
+installRust || errorAndExit "installing rust"
+installParu || errorAndExit "installing paru"
 
-cd ~/build
 export PATH=$PATH:~/.local/bin
+
+
+case $laptop in
+    y|Y|yes|Yes|YES)
+    paru -S --noconfirm --needed auto-cpufreq
+    *) echo "not installing laptop packages";;
+esac
 
 echo -ne "
 -------------------------------------------------------------------------
