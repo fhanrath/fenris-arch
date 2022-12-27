@@ -153,7 +153,7 @@ setSwap () {
 # System
 
 installArch () {
-	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 rustup --noconfirm --needed
+	pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt zsh networkmanager helix pipewire pipewire-alsa gst-plugin-pipewire pipewire-media-session pipewire-pulse pipewire-v4l2 rustup grub --noconfirm --needed
 }
 
 addUbuntuKeyserver () {
@@ -177,7 +177,7 @@ initBiosGrub () {
 }
 
 installEfiGrub () {
-	grub-install --efi-directory=/boot ${DISK}
+	grub-install --efi-directory=/boot --bootloader-id=FENRIS-GRUB --target=x86_64-efi ${DISK}
 }
 
 addcryptDeviceToGrub () {
