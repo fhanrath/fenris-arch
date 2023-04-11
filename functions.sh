@@ -219,15 +219,15 @@ installMicroCode() {
 installGpuDriver () {
 	gpu_type=$(lspci)
 	if grep -E "NVIDIA|GeForce" <<< ${gpu_type}; then
-    pacmanInstall nvidia nvidia-utils
+    pacmanInstall nvidia nvidia-utils opencl-nvidia
 	elif grep -E "Radeon" <<< ${gpu_type}; then
-    pacmanInstall mesa lib32-mesa xf86-video-amdgpu amdvlk lib32-amdvlk radeontop libva-mesa-driver mesa-vdpau
+    pacmanInstall mesa lib32-mesa xf86-video-amdgpu amdvlk lib32-amdvlk radeontop libva-mesa-driver mesa-vdpau opencl-mesa rocm-opencl-runtime
 	elif grep -E "Integrated Graphics Controller" <<< ${gpu_type}; then
-    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver
+    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver intel-compute-runtime
 	elif grep -E "Intel Corporation UHD" <<< ${gpu_type}; then
-    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver
+    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver intel-compute-runtime
 	elif grep -E "Iris Xe Graphics" <<< ${gpu_type}; then
-    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver
+    pacmanInstall libva-intel-driver libvdpau-va-gl lib32-vulkan-intel vulkan-intel libva-intel-driver libva-utils lib32-mesa intel-gpu-tools intel-media-driver intel-compute-runtime
 	fi
 }
 
